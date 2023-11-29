@@ -28,6 +28,7 @@ class Room extends Model
         'type_id',
         'latitude',
         'longitude',
+        'city_id',
         'slug',
     ];
 
@@ -49,8 +50,10 @@ class Room extends Model
         'airbnb_id',
         'airbnb_host_id',
         'type_id',
+        'city_id',
         'deleted_at',
     ];
+
     /**
      *  Room uri
      */
@@ -65,6 +68,14 @@ class Room extends Model
     public function type(): HasOne
     {
         return $this->hasOne(RoomType::class, 'id', 'type_id');
+    }
+
+    /**
+     * The city that belong to the room.
+     */
+    public function city(): HasOne
+    {
+        return $this->hasOne(City::class, 'id', 'city_id');
     }
 
     /**

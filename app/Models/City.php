@@ -17,7 +17,34 @@ class City extends Model
      * @var array
      */
     protected $fillable = [
+        'key',
         'name',
         'parent',
+        'slug',
     ];
+
+    /**
+     * The calculated fields.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'uri',
+    ];
+
+    /**
+     *  City uri
+     */
+    public function getUriAttribute()
+    {
+        return '/city/' . $this->slug;
+    }
+
+    /**
+     * Get the rooms associated with the city.
+     */
+    public function rooms()
+    {
+        return $this->hasMany(Room::class)->orderBy('name');
+    }
 }
