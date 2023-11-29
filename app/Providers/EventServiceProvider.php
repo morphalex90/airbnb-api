@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\City;
 use App\Models\Room;
+use App\Observers\CityObserver;
 use App\Observers\RoomObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,6 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        City::observe(CityObserver::class);
         Room::observe(RoomObserver::class);
     }
 
