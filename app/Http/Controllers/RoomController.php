@@ -32,7 +32,7 @@ class RoomController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        $room = Room::with('type', 'amenities')->where('slug', $request->route('room_slug'))->first();
+        $room = Room::with('type', 'amenities', 'city')->where('slug', $request->route('room_slug'))->first();
         if ($room) {
             return response()->json(['room' => $room], 200);
         }
