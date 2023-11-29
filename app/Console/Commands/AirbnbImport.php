@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\City;
 use App\Models\Room;
 use App\Models\RoomType;
 use Cocur\Slugify\Slugify;
@@ -33,10 +34,28 @@ class AirbnbImport extends Command
         $csv = Reader::createFromPath(storage_path('app/ny_airbnb.csv'), 'r');
         $csv->setHeaderOffset(0); // so we have the array key inside $data as the header
         $records = $csv->getRecords(); // get all records
-        $slugify = new Slugify();
 
         foreach ($records as $record) {
             $this->info(print_r($record, 1));
+
+            $neighbourhood_group = City::updateOrCreate(
+                [
+                    'name' => $record['neighbourhood_group'],
+                ],
+                [
+                    'name' => $record['neighbourhood_group'],
+                ]
+            );
+
+            $neighbourhood = City::updateOrCreate(
+                [
+                    'name' => $record['neighbourhood'],
+                ],
+                [
+                    'name' => $record['neighbourhood'],
+                    'parent' => $neighbourhood_group->id,
+                ]
+            );
 
             $room_type = RoomType::updateOrCreate(
                 [
@@ -59,7 +78,7 @@ class AirbnbImport extends Command
                     'latitude' => $record['latitude'],
                     'longitude' => $record['longitude'],
                     'type_id' => $room_type->id,
-                    'slug' => $slugify->slugify($record['name']),
+                    'city_id' => $neighbourhood->id,
                 ]
             );
         }
