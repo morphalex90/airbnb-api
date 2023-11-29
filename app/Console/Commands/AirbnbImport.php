@@ -36,51 +36,53 @@ class AirbnbImport extends Command
         $records = $csv->getRecords(); // get all records
 
         foreach ($records as $record) {
-            $this->info(print_r($record, 1));
+            if ($record['name'] != '') {
+                $this->info(print_r($record, 1));
 
-            $neighbourhood_group = City::updateOrCreate(
-                [
-                    'name' => $record['neighbourhood_group'],
-                ],
-                [
-                    'name' => $record['neighbourhood_group'],
-                ]
-            );
+                $neighbourhood_group = City::updateOrCreate(
+                    [
+                        'name' => $record['neighbourhood_group'],
+                    ],
+                    [
+                        'name' => $record['neighbourhood_group'],
+                    ]
+                );
 
-            $neighbourhood = City::updateOrCreate(
-                [
-                    'name' => $record['neighbourhood'],
-                ],
-                [
-                    'name' => $record['neighbourhood'],
-                    'parent' => $neighbourhood_group->id,
-                ]
-            );
+                $neighbourhood = City::updateOrCreate(
+                    [
+                        'name' => $record['neighbourhood'],
+                    ],
+                    [
+                        'name' => $record['neighbourhood'],
+                        'parent' => $neighbourhood_group->id,
+                    ]
+                );
 
-            $room_type = RoomType::updateOrCreate(
-                [
-                    'name' => $record['room_type'],
-                ],
-                [
-                    'name' => $record['room_type'],
-                ]
-            );
+                $room_type = RoomType::updateOrCreate(
+                    [
+                        'name' => $record['room_type'],
+                    ],
+                    [
+                        'name' => $record['room_type'],
+                    ]
+                );
 
-            Room::updateOrCreate(
-                [
-                    'airbnb_id' => $record['id'],
-                ],
-                [
-                    // 'user_id' => 1,
-                    'airbnb_id' => $record['id'],
-                    'name' => $record['name'],
-                    'airbnb_host_id' => $record['host_id'],
-                    'latitude' => $record['latitude'],
-                    'longitude' => $record['longitude'],
-                    'type_id' => $room_type->id,
-                    'city_id' => $neighbourhood->id,
-                ]
-            );
+                Room::updateOrCreate(
+                    [
+                        'airbnb_id' => $record['id'],
+                    ],
+                    [
+                        // 'user_id' => 1,
+                        'airbnb_id' => $record['id'],
+                        'name' => $record['name'],
+                        'airbnb_host_id' => $record['host_id'],
+                        'latitude' => $record['latitude'],
+                        'longitude' => $record['longitude'],
+                        'type_id' => $room_type->id,
+                        'city_id' => $neighbourhood->id,
+                    ]
+                );
+            }
         }
     }
 }
