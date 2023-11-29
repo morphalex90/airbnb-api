@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -23,6 +24,10 @@ Route::prefix('v1')->group(function () {
     ##### Rooms
     Route::post('rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::get('rooms/{room_slug}', [RoomController::class, 'show'])->name('rooms.show');
+
+    ##### Cities
+    Route::get('cities', [CityController::class, 'index'])->name('cities.index');
+    Route::get('cities/{city_slug}', [CityController::class, 'show'])->name('cities.show');
 
     // Route::middleware('auth:api')->group(function () {
     // });
