@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
+            $table->string('key')->index();
             $table->string('name')->index();
-            $table->unsignedMediumInteger('parent')->index();
+            $table->unsignedMediumInteger('parent')->index()->nullable();
+            $table->string('slug')->unique();
         });
     }
 

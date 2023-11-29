@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('type_id')->index();
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
+            $table->unsignedInteger('city_id')->nullable()->index();
             $table->string('slug')->unique();
             $table->timestamps();
             $table->softDeletes();
