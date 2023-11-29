@@ -14,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (config('app.env') === 'local') {
+        return 'Airbnb API v1, Laravel ' . app()->version();
+    }
+    return redirect('https://www.airbnb.com');
 });
