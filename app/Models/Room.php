@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -83,6 +84,22 @@ class Room extends Model
      */
     public function amenities(): BelongsToMany
     {
-        return $this->belongsToMany(Amenity::class, 'room_amenity');
+        return $this->belongsToMany(Amenity::class, 'room_amenity')->orderBy('name', 'ASC');
+    }
+
+    /**
+     * The images that belong to the room.
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(File::class, 'entity_id')->where('entity_type', 'room');
+    }
+
+    /**
+     * The images that belong to the room.
+     */
+    public function image(): HasOne
+    {
+        return $this->hasOne(File::class, 'entity_id')->where('entity_type', 'room');
     }
 }

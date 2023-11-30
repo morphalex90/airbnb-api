@@ -15,7 +15,7 @@ class RoomController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $rooms = Room::orderBy('id', 'DESC')->paginate(25, ['*'], 'p', $request->get('p', 1));
+        $rooms = Room::with('image')->orderBy('id', 'DESC')->paginate(25, ['*'], 'p', $request->get('p', 1));
 
         if ($rooms) {
             return response()->json(['rooms' => $rooms], 200);
@@ -32,7 +32,7 @@ class RoomController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        $room = Room::with('type', 'amenities', 'city')->where('slug', $request->route('room_slug'))->first();
+        $room = Room::with('type', 'amenities', 'city', 'images')->where('slug', $request->route('room_slug'))->first();
         if ($room) {
             return response()->json(['room' => $room], 200);
         }
