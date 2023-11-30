@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->ipAddress('registration_ip_address');
+            $table->dateTime('login')->nullable();
+            $table->dateTime('access')->nullable();
             $table->unsignedSmallInteger('country_id')->nullable()->index();
             $table->string('slug')->unique();
             $table->rememberToken();

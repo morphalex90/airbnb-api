@@ -28,6 +28,8 @@ class User extends Authenticatable
         'email',
         'password',
         'registration_ip_address',
+        'login',
+        'access',
         'country_id',
         'slug',
     ];
@@ -40,6 +42,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'login',
+        'access',
+        'registration_ip_address',
     ];
 
     /**

@@ -133,7 +133,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Incorrect credentials'], 401);
         }
 
-        $user = User::where('id', Auth::user()->id)->first(); // load user - with('role')-> 
+        $user = User::where('id', Auth::user()->id)->first(); // load user
 
         // if ($user->email_verified_at == null) { // email is not verified, we send a new link to verify email
         //     $user->sendEmailVerificationNotification();
@@ -146,6 +146,9 @@ class AuthController extends Controller
 
         // Token based on user role (scope)
         $token = $user->createToken($user->email . '-' . now()); //, [$userRole->role] to re add scope
+
+        $user->login = $user->access = date('Y-m-d H:i:s');
+        $user->save();
 
         // $user->generateCode($request->ip()); // send 2fa code
 
