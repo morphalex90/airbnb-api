@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Models\Amenity;
 use App\Models\City;
 use App\Models\Room;
+use App\Models\User;
 use App\Observers\AmenityObserver;
 use App\Observers\CityObserver;
 use App\Observers\RoomObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -34,6 +36,7 @@ class EventServiceProvider extends ServiceProvider
         Amenity::observe(AmenityObserver::class);
         City::observe(CityObserver::class);
         Room::observe(RoomObserver::class);
+        User::observe(UserObserver::class);
     }
 
     /**
