@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Cocur\Slugify\Slugify;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ class AuthController extends Controller
      * @param [string] email
      * @param [string] password
      * @param [string] password_confirmation
-     * @param [string] string
+     * @param [string] recaptcha_token
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request): JsonResponse
@@ -32,8 +31,8 @@ class AuthController extends Controller
             'last_name'             => 'nullable|string|max:100',
             'username'              => 'nullable|string|max:100|unique:users',
             'email'                 => 'required|string|email|max:100|unique:users',
-            'password'              => 'required|between:8,255|confirmed',
-            'password_confirmation' => 'required',
+            'password'              => 'required|string|between:8,255|confirmed',
+            'password_confirmation' => 'required|string',
             // 'recaptcha_token'       => 'required|string',
         ]);
 
@@ -43,20 +42,15 @@ class AuthController extends Controller
         //     return response()->json($recaptcha, 403);
         // }
 
-        $slugify = new Slugify();
-
         $user = User::create([
-            'status' => 1,
-            'key'       => Str::uuid(36),
             'first_name' => ($request->has('first_name') ? $request->get('first_name') : strstr(Str::lower($request->get('email')), '@', true)),
             'last_name' => ($request->has('last_name') ? $request->get('last_name') : null),
-            'username' => ($request->has('username') ? $request->get('username') : mt_rand(100000, 999999)),
+            'username' => ($request->has('username') && $request->get('username') != '' ? $request->get('username') : mt_rand(100000, 999999)),
             'role_id' => 1,
-            'email' => Str::lower($request->get('email')),
+            'email' => $request->get('email'),
             'password' => bcrypt($request->get('password')),
             'registration_ip_address' => $request->ip(),
             'country_id' => null,
-            'slug' => ($request->has('username') ? $slugify->slugify($request->get('username')) : mt_rand(100000, 999999)),
         ]);
 
         // event(new Registered($user));
