@@ -22,7 +22,7 @@ Route::prefix('v1')->group(function () {
 
 
     ##### Rooms
-    Route::post('rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::get('rooms', [RoomController::class, 'index'])->name('rooms.index');
     Route::get('rooms/{room_slug}', [RoomController::class, 'show'])->name('rooms.show');
 
     ##### Cities

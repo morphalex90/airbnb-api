@@ -15,12 +15,12 @@ class RoomController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $entities = Room::orderBy('id', 'DESC')->paginate(50, ['*'], 'p', request()->get('p', 1));
+        $rooms = Room::orderBy('id', 'DESC')->paginate(25, ['*'], 'p', request()->get('p', 1));
 
-        if ($entities) {
-            return response()->json(['entities' => $entities], 200);
+        if ($rooms) {
+            return response()->json(['rooms' => $rooms], 200);
         }
-        return response()->json(['message' => 'No entities available'], 404);
+        return response()->json(['message' => 'No rooms available'], 404);
     }
 
     /**
