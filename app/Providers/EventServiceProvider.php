@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Amenity;
 use App\Models\City;
 use App\Models\Room;
+use App\Observers\AmenityObserver;
 use App\Observers\CityObserver;
 use App\Observers\RoomObserver;
 use Illuminate\Auth\Events\Registered;
@@ -29,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Amenity::observe(AmenityObserver::class);
         City::observe(CityObserver::class);
         Room::observe(RoomObserver::class);
     }
