@@ -5,19 +5,18 @@ namespace App\Console\Commands;
 use App\Models\City;
 use App\Models\Room;
 use App\Models\RoomType;
-use Cocur\Slugify\Slugify;
 use Illuminate\Console\Command;
 use League\Csv\Reader;
 
 
-class AirbnbImport extends Command
+class AirbnbImportNY extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'airbnb:import';
+    protected $signature = 'airbnb:import-ny';
 
     /**
      * The console command description.
@@ -39,7 +38,7 @@ class AirbnbImport extends Command
             if ($record['name'] != '') {
                 $this->info(print_r($record, 1));
 
-                $neighbourhood_group = City::updateOrCreate(
+                $neighbourhood_group = City::firstOrCreate(
                     [
                         'name' => $record['neighbourhood_group'],
                     ],
@@ -58,7 +57,7 @@ class AirbnbImport extends Command
                     ]
                 );
 
-                $room_type = RoomType::updateOrCreate(
+                $room_type = RoomType::firstOrCreate(
                     [
                         'name' => $record['room_type'],
                     ],
