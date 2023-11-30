@@ -15,7 +15,7 @@ class RoomController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $rooms = Room::orderBy('id', 'DESC')->paginate(25, ['*'], 'p', request()->get('p', 1));
+        $rooms = Room::orderBy('id', 'DESC')->paginate(25, ['*'], 'p', $request->get('p', 1));
 
         if ($rooms) {
             return response()->json(['rooms' => $rooms], 200);
