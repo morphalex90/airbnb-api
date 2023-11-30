@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('entity_type');
             $table->integer('entity_id')->unsigned()->index();
             $table->string('url');
+            $table->string('alt');
             $table->string('filemime');
             $table->timestamp('created_at');
         });

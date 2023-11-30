@@ -20,6 +20,7 @@ class File extends Model
         'entity_type',
         'entity_id',
         'url',
+        'alt',
         'filemime',
     ];
 }

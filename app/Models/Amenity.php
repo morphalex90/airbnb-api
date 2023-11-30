@@ -17,6 +17,25 @@ class Amenity extends Model
      * @var array
      */
     protected $fillable = [
+        'key',
         'name',
+        'slug',
     ];
+
+    /**
+     * The calculated fields.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'uri',
+    ];
+
+    /**
+     *  Room uri
+     */
+    public function getUriAttribute()
+    {
+        return '/amenity/' . $this->slug;
+    }
 }
