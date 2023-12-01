@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('key')->index();
             $table->string('name')->index();
+            $table->longText('description')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->unsignedMediumInteger('parent')->index()->nullable();
             $table->string('slug')->unique();
         });
