@@ -21,6 +21,6 @@ class RoomObserver
 
         $room->slug = $helper->generateUniqueSlug($room->id, $room->name, 'rooms');
         $room->key = Str::uuid(36);
-        $room->name = $helper->removeEmoji(trim($room->name));
+        $room->name = trim($helper->removeEmoji($room->name));
     }
 }
