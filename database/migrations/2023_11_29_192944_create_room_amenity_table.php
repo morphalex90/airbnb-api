@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('room_amenity', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedMediumInteger('room_id')->unsigned();
-            $table->unsignedSmallInteger('amenity_id')->unsigned();
+            // $table->unsignedMediumInteger('room_id')->index();
+            // $table->unsignedSmallInteger('amenity_id')->index();
+            $table->foreignId('room_id')->constrained();
+            $table->foreignId('amenity_id')->constrained();
         });
     }
 
