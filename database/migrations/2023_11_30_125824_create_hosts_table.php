@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('hosts', function (Blueprint $table) {
             $table->id();
+            $table->string('airbnb_host_id');
+            $table->string('airbnb_host_name')->nullable();
+            $table->date('airbnb_host_since')->nullable();
+            $table->longText('airbnb_host_description')->nullable();
             $table->timestamps();
         });
     }
