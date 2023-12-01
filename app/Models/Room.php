@@ -26,10 +26,16 @@ class Room extends Model
         'airbnb_host_id',
         'name',
         'description',
-        'type_id',
+        'room_type_id',
+        'property_type_id',
         'latitude',
         'longitude',
+        'postcode',
         'city_id',
+        'guests',
+        'bedrooms',
+        'beds',
+        'bathrooms',
         'slug',
     ];
 
@@ -50,7 +56,7 @@ class Room extends Model
     protected $hidden = [
         'airbnb_id',
         'airbnb_host_id',
-        'type_id',
+        'room_type_id',
         'city_id',
         'deleted_at',
     ];
@@ -66,9 +72,17 @@ class Room extends Model
     /**
      * The room type that belong to the room.
      */
-    public function type(): HasOne
+    public function roomType(): HasOne
     {
-        return $this->hasOne(RoomType::class, 'id', 'type_id');
+        return $this->hasOne(RoomType::class, 'id', 'room_type_id');
+    }
+
+    /**
+     * The property type that belong to the property.
+     */
+    public function propertyType(): HasOne
+    {
+        return $this->hasOne(PropertyType::class, 'id', 'property_type_id');
     }
 
     /**
@@ -101,5 +115,13 @@ class Room extends Model
     public function image(): HasOne
     {
         return $this->hasOne(File::class, 'entity_id')->where('entity_type', 'room');
+    }
+
+    /**
+     * The hosts that belong to the room.
+     */
+    public function hosts(): BelongsToMany
+    {
+        return $this->belongsToMany(Host::class, 'host_room')->with('image');
     }
 }
