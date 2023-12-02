@@ -38,14 +38,7 @@ class AirbnbImportNY extends Command
             if ($record['name'] != '') {
                 $this->info(print_r($record, 1));
 
-                $neighbourhood_group = City::firstOrCreate(
-                    [
-                        'name' => $record['neighbourhood_group'],
-                    ],
-                    [
-                        'name' => $record['neighbourhood_group'],
-                    ]
-                );
+                $neighbourhood_group = City::firstOrCreate(['name' => $record['neighbourhood_group']], ['name' => $record['neighbourhood_group']]);
 
                 $neighbourhood = City::updateOrCreate(
                     [
@@ -57,14 +50,7 @@ class AirbnbImportNY extends Command
                     ]
                 );
 
-                $room_type = RoomType::firstOrCreate(
-                    [
-                        'name' => $record['room_type'],
-                    ],
-                    [
-                        'name' => $record['room_type'],
-                    ]
-                );
+                $room_type = RoomType::firstOrCreate(['name' => $record['room_type']], ['name' => $record['room_type']]);
 
                 Room::updateOrCreate(
                     [
@@ -77,7 +63,7 @@ class AirbnbImportNY extends Command
                         'airbnb_host_id' => $record['host_id'],
                         'latitude' => $record['latitude'],
                         'longitude' => $record['longitude'],
-                        'type_id' => $room_type->id,
+                        'room_type_id' => $room_type->id,
                         'city_id' => $neighbourhood->id,
                     ]
                 );
