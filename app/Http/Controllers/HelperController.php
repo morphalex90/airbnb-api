@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Cocur\Slugify\Slugify;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class HelperController extends Controller
 {
@@ -13,29 +14,29 @@ class HelperController extends Controller
         $slug = $slugify->slugify($name);
 
         $existing_slugs = DB::table($table)->where('slug', 'LIKE', $slug . '%')
-            ->where('id', '!=', $id ?? null) // Exclude the current model's ID
+            ->where('id', '!=', $id ?? null) // exclude current model ID
             ->pluck('slug')
             ->toArray();
 
-        if (!in_array($slug, $existing_slugs)) { // Slug is unique, no need to append numbers
+        if (!in_array($slug, $existing_slugs)) { // slug is unique, no need to append numbers
             return $slug;
         }
 
-        // Increment the number until a unique slug is found
+        // increment the number until a unique slug is found
         $i = 1;
         $uniqueSlugFound = false;
 
         while (!$uniqueSlugFound) {
             $newSlug = $slug . '-' . $i;
 
-            if (!in_array($newSlug, $existing_slugs)) { // Unique slug found
+            if (!in_array($newSlug, $existing_slugs)) { // unique slug found
                 return $newSlug;
             }
 
             $i++;
         }
 
-        return $slug . '-' . mt_rand(1000, 9999); // Fallback: return the original slug with a random number appended
+        return $slug . '-' . mt_rand(1000, 9999); // fallback: return the original slug with a random number appended
     }
 
     public function removeEmoji($string)
@@ -69,5 +70,14 @@ class HelperController extends Controller
         $clear_string = preg_replace($regex_dingbats, '', $clear_string);
 
         return $clear_string;
+    }
+
+    public function getAddressFromCoordinates($latitude, $longitude)
+    {
+        $neighbourhood = null;
+        $response = Http::get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' . $latitude . '&lon=' . $longitude . '&zoom=18&addressdetails=1');
+        if ($response->status() == 200) {
+            $this->info(print_r(json_decode($response->body()), 1));
+        }
     }
 }
