@@ -74,10 +74,42 @@ class HelperController extends Controller
 
     public function getAddressFromCoordinates($latitude, $longitude)
     {
-        $neighbourhood = null;
-        $response = Http::get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' . $latitude . '&lon=' . $longitude . '&zoom=18&addressdetails=1');
+        // $url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' . $latitude . '&lon=' . $longitude . '&zoom=12&addressdetails=1';
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latitude . ',' . $longitude . '&sensor=false&key=' . getenv('GOOGLE_MAPS_API_KEY');
+
+        $response = Http::get($url);
         if ($response->status() == 200) {
-            $this->info(print_r(json_decode($response->body()), 1));
+            $body = json_decode($response->body());
+
+            $return = [];
+            foreach ($body->results[0]->address_components as $component) {
+                if (
+                    !in_array('street_number', $component->types) &&
+                    !in_array('postal_code', $component->types) &&
+                    !in_array('postal_code_suffix', $component->types) &&
+                    !in_array('administrative_area_level_2', $component->types) &&
+                    !in_array('administrative_area_level_3', $component->types) &&
+                    !in_array('point_of_interest', $component->types) &&
+                    !in_array('subpremise', $component->types) &&
+                    !in_array('premise', $component->types) &&
+                    !in_array('route', $component->types)
+                ) {
+
+                    if (in_array('country', $component->types)) {
+                        $return[] = $component->short_name;
+                    } else {
+                        $return[] = $component->long_name;
+
+                        // $return[] = [
+                        //     'name' => $component->long_name,
+                        //     'types' => $component->types[0],
+                        // ];
+                    }
+                }
+            }
+            return $return;
         }
+
+        return false;
     }
 }
