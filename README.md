@@ -16,3 +16,9 @@ What will be added in the next future:
 - add amenities pages and show paginated relative rooms
 - build more cvs imports from different sources
 - gather more info for each room
+
+### Tools
+- [Postcode UK](https://postcodes.io)
+- [Validation from migration](https://validationforlaravel.com/)
+- https://nominatim.openstreetmap.org/reverse.php?lat=51.53398709799415&lon=-0.009004712536256327&zoom=12&format=xml
+- https://api.3geonames.org/51.548295656447685,-0.48205784700094884.json
